@@ -25,7 +25,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 
     Route::post('/openapi/create/user', [OpenApiController::class, 'createUser']);
-    
+    Route::post('/openapi/sso/login', [OpenApiController::class, 'loginWithoutPassword']);
+
     Route::middleware('auth:api')->group(function () {
         Route::post('/openapi/token/validation', [OpenApiController::class, 'ssotokenvalidation']);
         Route::post('/logout', [AuthController::class, 'logout']);

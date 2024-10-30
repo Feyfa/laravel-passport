@@ -36,7 +36,7 @@ class OpenApiController extends Controller
             $data['name'] = $user->name;
             $data['access_token'] = $user->createToken('access_token')->accessToken;
 
-            $url = "http://localhost:5174/sso?access_token={$data['access_token']}";
+            // $url = "http://localhost:5174/sso?access_token={$data['access_token']}";
 
             return response()->json(['status' => 'success', 'data' => $data, 'status_code' => 200, 'url' => $url], 200);
         }
@@ -45,6 +45,19 @@ class OpenApiController extends Controller
             $user->delete();
             return response()->json(['status' => 'failed', 'message' => 'name or password wrong', 'status_code' => '401'], 401);
         }
+    }
+
+    public function loginWithoutPassword(Request $request)
+    {
+        $user = User::where('id',10)
+                    ->first();
+
+        if(!$user)
+            return response()->json(['status' => 'error', 'message' => "User Not Found"], 404);
+
+        $access_token = $user->createToken('access_token')->accessToken;
+
+        return response()->json(['status' => 'success', 'access_token' => $access_token, 'status_code' => 200], 200);
     }
 
     public function ssotokenvalidation()
